@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        #charCount { color: #6b7280; }
+        #charCount.error { color: #dc2626; }
+        textarea:invalid { border-color: #dc2626; }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h1 class="text-2xl font-bold mb-4 text-center">Submit Your Message</h1>
+        <form id="messageForm" action="YOUR_GOOGLE_APPS_SCRIPT_URL" method="POST">
+            <div class="mb-4">
+                <textarea
+                    id="message"
+                    name="message"
+                    maxlength="500"
+                    rows="5"
+                    class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Type your message here (500 characters max)"
+                    required
+                ></textarea>
+                <p id="charCount" class="text-sm mt-1">0/500 characters</p>
+            </div>
+            <button
+                type="submit"
+                class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
+            >
+                Submit
+            </button>
+        </form>
+    </div>
+
+    <script>
+        const textarea = document.getElementById('message');
+        const charCount = document.getElementById('charCount');
+
+        textarea.addEventListener('input', () => {
+            const count = textarea.value.length;
+            charCount.textContent = `${count}/500 characters`;
+            if (count > 500) {
+                charCount.classList.add('error');
+                textarea.setAttribute('aria-invalid', 'true');
+            } else {
+                charCount.classList.remove('error');
+                textarea.setAttribute('aria-invalid', 'false');
+            }
+        });
+
+        document.getElementById('messageForm').addEventListener('submit', (e) => {
+            if (textarea.value.length > 500) {
+                e.preventDefault();
+                alert('Message exceeds 500 characters.');
+            }
+        });
+    </script>
+</body>
+</html>
